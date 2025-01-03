@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.Port || 5000;
 
@@ -34,8 +34,28 @@ async function run() {
     const database = client.db("usersDatabase");
     const usersCollection = database.collection("usersCollection");
     
+
+
+
+    app.get("/users", async(req, res)=>{
+      const result = await usersCollection.find().toArray();
+      res.send(result)
+    })
+
+    app.get("/users/:id", async(req, res)=>{
+      const id = req.params.id;
+      const result = await usersCollection.find({_id : new ObjectId(id)}).toArray();
+      res.send(result)
+    })
+
+
+
+
+
+
+
     // Create a document to insert
-    app.get("/addusers", async(req, res)=>{
+    app.post("/addusers", async(req, res)=>{
         
           const result = await usersCollection.insertOne(req.body);
 
