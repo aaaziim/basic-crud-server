@@ -51,15 +51,20 @@ async function run() {
 
 
 
-
-
-
     // Create a document to insert
     app.post("/addusers", async(req, res)=>{
         
           const result = await usersCollection.insertOne(req.body);
 
           res.send(result)
+    })
+
+
+
+    app.put("/users/update/:id", async(req, res)=>{
+      const id = req.params.id;
+      const result = await usersCollection.updateOne({_id : new ObjectId(id)}, {$set:{name:req.body.name, email:req.body.email}}) ;
+      res.send(result)
     })
 
 
